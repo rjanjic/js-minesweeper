@@ -1,0 +1,14 @@
+
+.header {
+    position: relative;
+    border: 2px solid;
+    border-color: #eee #999 #999 #eee;
+    background-color: #ccc;
+    width: 724px;
+
+    &::after {
+        display: block;
+        content: '';
+        clear: both;
+    }
+}

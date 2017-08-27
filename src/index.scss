@@ -1,0 +1,18 @@
+* {
+    box-sizing: border-box;
+    user-select: none;
+}
+
+body {
+    display: block;
+}
+
+.container {
+    width: 724px;
+    margin: 20px auto;
+}
+
+@import "./scss/header";
+@import "./scss/smiley";
+@import "./scss/counter";
+@import "./scss/fields";
