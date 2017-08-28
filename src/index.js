@@ -160,8 +160,20 @@ const openField = (x, y) => {
     }
 };
 
+const updateCounterClasses = (el, val) => {
+    for (let i = 0; i < 10; i++) {
+        el.classList.toggle(`number--${i}`, i === val);
+    }
+};
+
 const updateCounter = (el, number) => {
-    el.innerHTML = `${number}`.padStart(3, "0");
+    if (number > 999) return;
+    const numbers = `${number}`.padStart(3, "0").split('');
+    const numbersEl = el.querySelectorAll('.js-number');
+
+    for (let i = 0, l = numbers.length; i < l; i++) {
+        updateCounterClasses(numbersEl[i], parseInt(numbers[i]));
+    }
 };
 
 const handleInterval = () => {

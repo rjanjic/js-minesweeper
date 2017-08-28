@@ -45,7 +45,7 @@
         &::before {
             top: 4px;
             left: 50%;
-            width: 4px;
+            width: 8px;
             height: 4px;
             margin-left: -4px;
             border-left: 2px solid black;
@@ -55,8 +55,8 @@
         &::after {
             top: 9px;
             left: 50%;
-            width: 8px;
-            height: 3px;
+            width: 12px;
+            height: 5px;
             margin-left: -6px;
             border: 2px solid;
             border-width: 0 2px 2px;
@@ -64,6 +64,7 @@
 
             .is-finished & {
                 top: 8px;
+                width: 8px;
                 margin-left: -4px;
                 border-width: 0 0 2px;
                 border-radius: 0;

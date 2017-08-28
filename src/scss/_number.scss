@@ -1,0 +1,261 @@
+.number {
+    $border: 3px;
+    $space: 1px;
+    $color: #4c1e1e;
+    $color-active: #f66;
+
+    float: left;
+    margin-left: $border;
+    height: $border * 8 + $space * 4;
+    width: $border * 4 + $space * 2;
+    position: relative;
+
+    &::before {
+        content: '';
+        display: block;
+        border: $border solid;
+        border-color: $color transparent transparent transparent;
+        width: $border * 4;
+        position: absolute;
+        top: 0;
+    }
+
+    &::after {
+        content: '';
+        display: block;
+        border: $border solid;
+        border-color: transparent transparent $color transparent;
+        width: $border * 4;
+        height: $border * 4;
+        position: absolute;
+        bottom: 0;
+    }
+
+    &__inner {
+        position: absolute;
+        display: block;
+        width: $border * 4;
+        height: $border * 4;
+        border: $border solid;
+        border-color: transparent $color transparent $color;
+
+        &--top {
+            top: 1px;
+            border-width: $border $border $border/2;
+
+            &::after {
+                content: '';
+                display: block;
+                border: $border solid;
+                border-width: $border/2 $border;
+                border-color: transparent transparent $color transparent;
+                width: $border * 4;
+                height: $border * 4;
+                position: absolute;
+                top: -$border + 1px;
+                left: -$border;
+            }
+        }
+
+        &--bottom {
+            bottom: $space;
+            border-width: $border/2 $border $border;
+
+            &::after {
+                content: '';
+                display: block;
+                border: $border solid;
+                border-width: $border/2 $border;
+                border-color: $color transparent transparent transparent;
+                width: $border * 4;
+                height: $border * 4;
+                position: absolute;
+                top: -($border/2) - $space;
+                left: -$border;
+            }
+        }
+    }
+
+    &--1 &__inner {
+        border-right-color: $color-active;
+    }
+
+    &--2::before {
+        border-top-color: $color-active;
+    }
+
+    &--2 &__inner--top {
+        border-right-color: $color-active;
+    }
+
+    &--2 &__inner--top::after {
+        border-bottom-color: $color-active;
+    }
+
+    &--2 &__inner--bottom::after {
+        border-top-color: $color-active;
+    }
+
+    &--2 &__inner--bottom {
+        border-left-color: $color-active;
+    }
+
+    &--2::after {
+        border-bottom-color: $color-active;
+    }
+
+    &--3::before {
+        border-top-color: $color-active;
+    }
+
+    &--3 &__inner {
+        border-right-color: $color-active;
+    }
+
+    &--3 &__inner--top::after {
+        border-bottom-color: $color-active;
+    }
+
+    &--3 &__inner--bottom::after {
+        border-top-color: $color-active;
+    }
+
+    &--3::after {
+        border-bottom-color: $color-active;
+    }
+
+    &--4 {
+        border-left-color: $color-active;
+    }
+
+    &--4 &__inner {
+        border-right-color: $color-active;
+
+        &--top {
+            border-left-color: $color-active;
+        }
+    }
+
+    &--4 &__inner--top::after {
+        border-bottom-color: $color-active;
+    }
+
+    &--4 &__inner--bottom::after {
+        border-top-color: $color-active;
+    }
+
+    &--5::before {
+        border-top-color: $color-active;
+    }
+
+    &--5 &__inner--top {
+        border-left-color: $color-active;
+    }
+
+    &--5 &__inner--top::after {
+        border-bottom-color: $color-active;
+    }
+
+    &--5 &__inner--bottom::after {
+        border-top-color: $color-active;
+    }
+
+    &--5 &__inner--bottom {
+        border-right-color: $color-active;
+    }
+
+    &--5::after {
+        border-bottom-color: $color-active;
+    }
+
+    &--6::before {
+        border-top-color: $color-active;
+    }
+
+    &--6 &__inner--top {
+        border-left-color: $color-active;
+    }
+
+    &--6 &__inner--top::after {
+        border-bottom-color: $color-active;
+    }
+
+    &--6 &__inner--bottom::after {
+        border-top-color: $color-active;
+    }
+
+    &--6 &__inner--bottom {
+        border-right-color: $color-active;
+        border-left-color: $color-active;
+    }
+
+    &--6::after {
+        border-bottom-color: $color-active;
+    }
+
+    &--7 &__inner {
+        border-right-color: $color-active;
+    }
+
+    &--7::before {
+        border-top-color: $color-active;
+    }
+
+    &--8 &__inner {
+        border-right-color: $color-active;
+        border-left-color: $color-active;
+    }
+
+    &--8::after {
+        border-bottom-color: $color-active;
+    }
+
+    &--8::before {
+        border-top-color: $color-active;
+    }
+
+    &--8 &__inner--top::after {
+        border-bottom-color: $color-active;
+    }
+
+    &--8 &__inner--bottom::after {
+        border-top-color: $color-active;
+    }
+
+    &--9 &__inner {
+        border-right-color: $color-active;
+
+        &--top {
+            border-left-color: $color-active;
+        }
+    }
+
+    &--9::after {
+        border-bottom-color: $color-active;
+    }
+
+    &--9::before {
+        border-top-color: $color-active;
+    }
+
+    &--9 &__inner--top::after {
+        border-bottom-color: $color-active;
+    }
+
+    &--9 &__inner--bottom::after {
+        border-top-color: $color-active;
+    }
+
+    &--0 &__inner {
+        border-right-color: $color-active;
+        border-left-color: $color-active;
+    }
+
+    &--0::after {
+        border-bottom-color: $color-active;
+    }
+
+    &--0::before {
+        border-top-color: $color-active;
+    }
+}

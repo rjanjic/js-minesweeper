@@ -1,10 +1,10 @@
-* {
+*, *::before, *::after {
     box-sizing: border-box;
-    user-select: none;
 }
 
 body {
     display: block;
+    user-select: none;
 }
 
 .container {
