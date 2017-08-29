@@ -2,12 +2,8 @@
     box-sizing: border-box;
 }
 
-body {
-    display: block;
-    user-select: none;
-}
-
 .container {
+    user-select: none;
     width: 724px;
     margin: 20px auto;
 }

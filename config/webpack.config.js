@@ -94,9 +94,9 @@ module.exports = {
                 {
                     loader: require.resolve('css-loader'),
                     options: {
-                        modules: false,
+                        modules: true,
                         sourceMap: false,
-                        localIdentName: '[local]-[hash:base64:5]'
+                        localIdentName: env === 'development' ? '[local]' : '[hash:base64:5]'
                     }
                 },
                 {

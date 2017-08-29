@@ -1,9 +1,6 @@
-import './index.scss';
-const containerEl = document.getElementById("js-container");
-const tableEl = document.getElementById("js-table");
-const smileyEl = document.getElementById("js-smiley");
-const timeEl = document.getElementById("js-time");
-const minesEl = document.getElementById("js-mines");
+import template from './template';
+import styles from './index.scss';
+
 const rows = 16;
 const cols = 30;
 const mines = 99;
@@ -14,13 +11,23 @@ let time = 0;
 let gameStarted = false;
 let map = [];
 
+const minesweeperEl = document.createElement("div");
+minesweeperEl.innerHTML = template;
+document.body.appendChild(minesweeperEl);
+
+const containerEl = document.getElementById("js-container");
+const tableEl = document.getElementById("js-table");
+const smileyEl = document.getElementById("js-smiley");
+const timeEl = document.getElementById("js-time");
+const minesEl = document.getElementById("js-mines");
+
 const generateFieldMap = (cols, rows, mines) => {
     map = [];
     for (let y = 0; y < rows; y++) {
         const row = [];
         for (let x = 0; x < cols; x++) {
             const fieldEl = document.createElement("span");
-            fieldEl.classList.add("field");
+            fieldEl.classList.add(styles['field']);
             fieldEl.addEventListener("field-change", handleCustomEvent);
             fieldEl.addEventListener("mousedown", function(event) {
                 event.preventDefault();
@@ -45,8 +52,8 @@ const generateFieldMap = (cols, rows, mines) => {
         setRandomMine();
     }
 
-    for (let y = 0, rl = map.length; y < rl; y++) {
-        for (let x = 0, cl = map[y].length; x < cl; x++) {
+    for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
             const { el, isMined } = getField(x, y);
             if (!isMined) {
                 updateField(x, y, {
@@ -71,20 +78,23 @@ const setRandomMine = () => {
 const getField = (x, y) => map[y][x];
 
 const updateField = (x, y, data) => {
-    map[y][x] = { ...map[y][x], ...data };
+    map[y][x] = Object.assign(map[y][x], data);
 
     const { el, count } = getField(x, y);
 
     if (data.exploded) {
-        el.classList.add("field--exploded");
+        el.classList.add(styles['field--exploded']);
     }
 
     if (data.isOpen) {
-        el.classList.add("field--open", `field--count-${count}`);
+        el.classList.add(
+            styles['field--open'],
+            styles[`field--count-${count}`]
+        );
     }
 
     if (data.isMined) {
-        el.classList.add("field--mined");
+        el.classList.add(styles['field--mined']);
         el.innerHTML = "☀";
     }
 
@@ -93,7 +103,7 @@ const updateField = (x, y, data) => {
     }
 
     if (data.isFlagged !== undefined) {
-        el.classList.toggle("field--flag", data.isFlagged);
+        el.classList.toggle(styles['field--flag'], data.isFlagged);
     }
 };
 
@@ -162,7 +172,7 @@ const openField = (x, y) => {
 
 const updateCounterClasses = (el, val) => {
     for (let i = 0; i < 10; i++) {
-        el.classList.toggle(`number--${i}`, i === val);
+        el.classList.toggle(styles[`number--${i}`], i === val);
     }
 };
 
@@ -207,9 +217,9 @@ const handleCustomEvent = event => {
 
 const finishGame = () => {
     clearInterval(interval);
-    containerEl.classList.add("is-finished");
+    containerEl.classList.add(styles['is-finished']);
     if (fieldsLeft === 0) {
-        containerEl.classList.add("is-victory");
+        containerEl.classList.add(styles['is-victory']);
     }
 };
 
@@ -220,7 +230,7 @@ const clearPreviousGame = () => {
     fieldsLeft = rows * cols - mines;
     time = 0;
     tableEl.innerHTML = "";
-    containerEl.classList.remove("is-finished");
+    containerEl.classList.remove(styles['is-finished']);
     updateCounter(timeEl, 0);
     updateCounter(minesEl, mines);
 };
