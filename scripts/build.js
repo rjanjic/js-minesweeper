@@ -12,6 +12,9 @@ compiler.run((err, stats) => {
     if (err) {
         console.log('Error while building application', err);
     } else {
+        if (stats.compilation.errors) {
+            console.log(stats.compilation.errors);
+        }
         console.log('Application successfully built');
     }
 });

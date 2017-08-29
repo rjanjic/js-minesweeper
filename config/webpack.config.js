@@ -1,7 +1,6 @@
 const autoprefixer = require('autoprefixer');
 const webpack = require('webpack');
 const UglifyPlugin = require('uglifyjs-webpack-plugin');
-const Visualizer = require('webpack-visualizer-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const paths = require('./paths');
 const env = process.env.NODE_ENV;
@@ -40,8 +39,7 @@ if (env === 'production') {
             output: {
                 comments: false
             }
-        }),
-        new Visualizer()
+        })
     );
 } else {
     plugins.push(
@@ -80,7 +78,13 @@ module.exports = {
             test: /\.js$/,
             include: paths.src,
             loader: require.resolve('babel-loader'),
+
             options: {
+                presets: [['env', {
+                    targets: {
+                        uglify: true
+                    }
+                }]],
                 cacheDirectory: true
             }
         }, {
@@ -102,6 +106,7 @@ module.exports = {
                         // https://github.com/facebookincubator/create-react-app/issues/2677
                         ident: 'postcss',
                         plugins: () => [
+                            require('cssnano'),
                             require('postcss-flexbugs-fixes'),
                             autoprefixer({
                                 browsers: [
