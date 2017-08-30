@@ -1,4 +1,4 @@
-import template from './template';
+import { containerTpl, mineTpl, flagTpl } from './template';
 import styles from './index.scss';
 
 const rows = 16;
@@ -12,7 +12,7 @@ let gameStarted = false;
 let map = [];
 
 const minesweeperEl = document.createElement("div");
-minesweeperEl.innerHTML = template;
+minesweeperEl.innerHTML = containerTpl;
 document.body.appendChild(minesweeperEl);
 
 const containerEl = document.getElementById("js-container");
@@ -80,9 +80,10 @@ const getField = (x, y) => map[y][x];
 const updateField = (x, y, data) => {
     map[y][x] = Object.assign(map[y][x], data);
 
-    const { el, count } = getField(x, y);
+    const { el, count, isMined } = getField(x, y);
 
     if (data.exploded) {
+        el.classList.add(styles['field--open']);
         el.classList.add(styles['field--exploded']);
     }
 
@@ -95,7 +96,7 @@ const updateField = (x, y, data) => {
 
     if (data.isMined) {
         el.classList.add(styles['field--mined']);
-        el.innerHTML = "☀";
+        el.innerHTML = mineTpl;
     }
 
     if (data.count) {
@@ -104,6 +105,13 @@ const updateField = (x, y, data) => {
 
     if (data.isFlagged !== undefined) {
         el.classList.toggle(styles['field--flag'], data.isFlagged);
+        el.classList.toggle(styles['field--flag-wrong'], data.isFlagged && !isMined);
+
+        if (data.isFlagged) {
+            el.innerHTML = (isMined ? flagTpl : `${mineTpl}${flagTpl}`);
+        } else {
+            el.innerHTML =  (isMined ? mineTpl : count);
+        }
     }
 };
 

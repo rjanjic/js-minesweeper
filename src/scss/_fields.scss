@@ -65,38 +65,58 @@
         color: #000;
     }
 
-    &--flag {
-        &::after {
-            content: '⚑';
-            top: 0;
-            left: 0;
-            display: block;
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            line-height: 20px;
-            color: #33c;
+    &--mined {
+        padding: 2px;
+    }
 
+    &--flag {
+        padding: 5px 8px;
+    }
+
+    &--flag-wrong {
+        .is-finished & {
+            padding: 2px;
+        }
+
+        &::before,
+        &::after {
             .is-finished & {
-                color: #c00;
+                content: '';
+                display: block;
+                width: 26px;
+                border: 1px solid red;
+                transform: rotate(45deg);
+                top: 9px;
+                left: -3px;
+                position: absolute;
+            }
+        }
+
+        &::after {
+            .is-finished & {
+                transform: rotate(-45deg);
+            }
+        }
+
+        .is-finished & {
+            .mine {
+                display: block;
+            }
+
+            .mast {
+                display: none;
             }
         }
     }
 
-    &--mined {
-        .is-finished & {
-            color: #000;
-        }
-    }
-
     &--mined#{&}--exploded {
-        color: #f00;
+        padding: 3px;
+        background-color: #f00;
     }
 
     &--mined#{&}--flag {
         .is-finished & {
-            color: #33c;
-
+            &::before,
             &::after {
                 display: none;
             }

@@ -1,4 +1,3 @@
-
 .smiley {
     position: absolute;
     left: 50%;
@@ -25,12 +24,12 @@
         display: block;
         width: 24px;
         height: 24px;
-        border: 2px solid black;
+        border: 2px solid #000;
         border-radius: 20px;
         background-color: #ff0;
 
         .is-finished & {
-            background-color: #f66;
+            background-color: #f00;
         }
 
         .is-victory & {
@@ -48,8 +47,8 @@
             width: 8px;
             height: 4px;
             margin-left: -4px;
-            border-left: 2px solid black;
-            border-right: 2px solid black;
+            border-left: 2px solid #000;
+            border-right: 2px solid #000;
         }
 
         &::after {

@@ -1,6 +1,20 @@
 import styles from './index.scss';
 
-export default `
+export const flagTpl = `
+<span class="${styles['mast']}">
+  <span class="${styles['mast__flag']}"></span>
+</span>
+`;
+
+export const mineTpl = `
+<span class="${styles['mine']}">
+  <span class="${styles['mine']}">
+    <span class="${styles['mine__shadow']}"></span>
+  </span>
+</span>
+`;
+
+export const containerTpl =  `
 <div id="js-container" class="${styles['container']}">
     <div class="${styles['header']}">
         <div id="js-mines" class="${styles['counter']} ${styles['counter--left']}">
