@@ -1,77 +1,77 @@
 .number {
     $border: 3px;
-    $space: 1px;
+    $border-spacing: 1px;
     $color: #4c1e1e;
     $color-active: #f66;
 
     float: left;
     margin-left: $border;
-    height: $border * 8 + $space * 4;
-    width: $border * 4 + $space * 2;
+    height: $border * 8 + $border-spacing * 4;
+    width: $border * 4 + $border-spacing * 2;
     position: relative;
 
-    &::before {
-        content: '';
-        display: block;
-        border: $border solid;
-        border-color: $color transparent transparent transparent;
-        width: $border * 4;
-        position: absolute;
-        top: 0;
+    &:first-child {
+        margin-left: 2px;
     }
 
+    &::before,
     &::after {
         content: '';
         display: block;
         border: $border solid;
-        border-color: transparent transparent $color transparent;
         width: $border * 4;
         height: $border * 4;
         position: absolute;
+    }
+
+    &::before {
+        top: 0;
+        border-color: $color transparent transparent transparent;
+    }
+
+    &::after {
         bottom: 0;
+        border-color: transparent transparent $color transparent;
     }
 
     &__inner {
         position: absolute;
         display: block;
-        width: $border * 4;
+        width: $border * 4 + $border-spacing * 2;
         height: $border * 4;
+        left: -$border-spacing;
         border: $border solid;
         border-color: transparent $color transparent $color;
+
+        &::after {
+            position: absolute;
+            width: $border * 4;
+            height: $border * 4;
+            content: '';
+            display: block;
+            border: $border solid;
+            border-width: $border/2 $border;
+        }
 
         &--top {
             top: 1px;
             border-width: $border $border $border/2;
 
             &::after {
-                content: '';
-                display: block;
-                border: $border solid;
-                border-width: $border/2 $border;
+                top: -$border + $border-spacing;
+                left: -$border + $border-spacing;
                 border-color: transparent transparent $color transparent;
-                width: $border * 4;
-                height: $border * 4;
-                position: absolute;
-                top: -$border + 1px;
-                left: -$border;
             }
         }
 
         &--bottom {
-            bottom: $space;
+            bottom: $border-spacing;
             border-width: $border/2 $border $border;
 
             &::after {
-                content: '';
-                display: block;
-                border: $border solid;
-                border-width: $border/2 $border;
+                top: -($border/2) - $border-spacing;
+                left: -$border + $border-spacing;
                 border-color: $color transparent transparent transparent;
-                width: $border * 4;
-                height: $border * 4;
-                position: absolute;
-                top: -($border/2) - $space;
-                left: -$border;
             }
         }
     }
