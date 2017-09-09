@@ -21,6 +21,16 @@ const smileyEl = document.getElementById("js-smiley");
 const timeEl = document.getElementById("js-time");
 const minesEl = document.getElementById("js-mines");
 
+const handleMouseDown = (x, y) => (event) => {
+    event.preventDefault();
+    const shouldFlag = event.which === 3 || event.button === 2;
+    if (shouldFlag) {
+        flagField(x, y);
+        return;
+    }
+    openField(x, y);
+};
+
 const generateFieldMap = (cols, rows, mines) => {
     map = [];
     for (let y = 0; y < rows; y++) {
@@ -28,15 +38,7 @@ const generateFieldMap = (cols, rows, mines) => {
         for (let x = 0; x < cols; x++) {
             const fieldEl = document.createElement("span");
             fieldEl.classList.add(styles['field']);
-            fieldEl.addEventListener("field-change", handleCustomEvent);
-            fieldEl.addEventListener("mousedown", function(event) {
-                event.preventDefault();
-                const shouldFlag = event.which === 3 || event.button === 2;
-                const customEvent = new CustomEvent("field-change", {
-                    detail: { x, y, shouldFlag }
-                });
-                this.dispatchEvent(customEvent);
-            });
+            fieldEl.addEventListener("mousedown", handleMouseDown(x, y));
             row.push({
                 el: fieldEl,
                 isMined: false,
@@ -212,15 +214,6 @@ const flagField = (x, y) => {
     if (isFlagged) {
         updateCounter(minesEl, ++minesLeft);
     }
-};
-
-const handleCustomEvent = event => {
-    const { x, y, shouldFlag } = event.detail;
-    if (shouldFlag) {
-        flagField(x, y);
-        return;
-    }
-    openField(x, y);
 };
 
 const finishGame = () => {
