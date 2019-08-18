@@ -35,11 +35,7 @@ if (env === 'production') {
                 NODE_ENV: JSON.stringify('production')
             }
         }),
-        new UglifyPlugin({
-            output: {
-                comments: false
-            }
-        })
+        new UglifyPlugin()
     );
 } else {
     plugins.push(
@@ -48,6 +44,7 @@ if (env === 'production') {
 }
 
 module.exports = {
+    mode: env === 'production' ? 'production' : 'development',
     context: paths.src,
     devtool: 'cheap-module-source-map',
     entry: paths.index,
@@ -80,7 +77,7 @@ module.exports = {
             loader: require.resolve('babel-loader'),
 
             options: {
-                presets: [['env', {
+                presets: [['@babel/preset-env', {
                     targets: {
                         uglify: true
                     }
@@ -95,8 +92,7 @@ module.exports = {
                     loader: require.resolve('css-loader'),
                     options: {
                         modules: true,
-                        sourceMap: false,
-                        localIdentName: env === 'development' ? '[local]' : '[hash:base64:5]'
+                        sourceMap: true,
                     }
                 },
                 {
@@ -108,15 +104,7 @@ module.exports = {
                         plugins: () => [
                             require('cssnano'),
                             require('postcss-flexbugs-fixes'),
-                            autoprefixer({
-                                browsers: [
-                                    '>1%',
-                                    'last 4 versions',
-                                    'Firefox ESR',
-                                    'not ie < 9' // React doesn't support IE8 anyway
-                                ],
-                                flexbox: 'no-2009'
-                            })
+                            autoprefixer()
                         ]
                     }
                 }, {
