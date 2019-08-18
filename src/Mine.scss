@@ -2,17 +2,13 @@
     $size: 16px;
     $pin: $size/4;
 
-    display: none;
+    display: block;
     width: $size;
     height: $size;
     border-radius: $size;
     background-color: #000;
     position: relative;
     transform: scale(.75);
-
-    .is-finished & {
-        display: block;
-    }
 
     &::before,
     &::after {
