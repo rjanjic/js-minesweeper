@@ -1,8 +1,8 @@
 <script>
     import Number from './Number.svelte';
-    export let position = 'left'
+    export let position = 'left';
     export let number = 0;
-    const value = `00${number}`.slice(-3);
+    $: value = `00${number}`.slice(-3);
 </script>
 <style>
     .counter {
@@ -15,15 +15,15 @@
         background-color: #000;
     }
 
-    .counter--left {
+    .left {
         float: left;
     }
 
-    .counter--right {
+    .right {
         float: right;
     }
 </style>
-<div class="counter counter--{position}">
+<div class="counter {position}">
     <Number number={value[0]}/>
     <Number number={value[1]}/>
     <Number number={value[2]}/>

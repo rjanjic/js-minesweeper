@@ -25,7 +25,7 @@
         border-color: #999 #eee #eee #999;
     }
 
-    .smiley__ic {
+    .icon {
         position: relative;
         margin: 2px;
         display: block;
@@ -36,21 +36,17 @@
         background-color: #ff0;
     }
 
-    .smiley__ic--finished {
-        background-color: #f00;
-    }
-
-    .smiley__ic--victory {
+    .victory {
         background-color: #0f0;
     }
 
-    .smiley__ic::before,
-    .smiley__ic::after {
+    .icon::before,
+    .icon::after {
         content: '';
         position: absolute;
     }
 
-    .smiley__ic::before {
+    .icon::before {
         top: 6px;
         left: 50%;
         width: 8px;
@@ -60,7 +56,7 @@
         border-right: 2px solid #000;
     }
 
-    .smiley__ic::after {
+    .icon::after {
         top: 12px;
         left: 50%;
         width: 12px;
@@ -70,7 +66,12 @@
         border-width: 0 2px 2px;
         border-radius: 0 0 8px 8px;
     }
-    .smiley__ic--finished::after {
+
+    .finished {
+        background-color: #f00;
+    }
+
+    .finished::after {
         top: 10px;
         width: 8px;
         margin-left: -4px;
@@ -78,6 +79,7 @@
         border-radius: 0;
     }
 </style>
+
 <div class="smiley" on:click={onClick}>
-    <span class="smiley__ic {victory ? 'smiley__ic--victory' : ''} {finished ? 'smiley__ic--finished' : ''}"></span>
+    <span class="icon" class:victory={victory} class:finished={finished}></span>
 </div>
