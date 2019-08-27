@@ -3,7 +3,7 @@
     import Flag from './Flag.svelte';
 
     export let onMouseDown = () => {};
-    export let exploded = false;
+    export let didExplode = false;
     export let isOpen = false;
     export let isMined = false;
     export let isFlagged = false;
@@ -29,12 +29,13 @@
         background-color: #ccc;
     }
 
-    .open {
+    .is-open {
         background-color: #bbb;
-        border-width: 1px;
-        border-color: #999;
         padding: 1px;
         cursor: default;
+        border: dotted 1px #999;
+        border-left-color: transparent;
+        border-top-color: transparent;
     }
 
     .count-0 {
@@ -67,31 +68,34 @@
         color: #000;
     }
 
-    .mined {
+    .is-mined {
         padding: 2px;
     }
 
-    .flag {
+    .is-flagged {
         padding: 5px 8px;
     }
 
-    .flag-wrong::before,
-    .flag-wrong::after {
+    .is-flagged-wrong::before,
+    .is-flagged-wrong::after {
         content: '';
         display: block;
         width: 26px;
         border: 1px solid #f00;
-        transform: rotate(45deg);
         top: 9px;
         left: -3px;
         position: absolute;
     }
 
-    .flag-wrong::after {
+    .is-flagged-wrong::before {
+        transform: rotate(45deg);
+    }
+
+    .is-flagged-wrong::after {
         transform: rotate(-45deg);
     }
 
-    .mined.exploded {
+    .is-mined.did-explode {
         padding: 3px;
         background-color: #f00;
     }
@@ -99,16 +103,16 @@
 
 <span
     class="field count-{count}"
-    class:exploded={exploded}
-    class:open={isOpen}
-    class:flag={isFlagged}
-    class:mined={gameFinished && isMined && !isFlagged}
-    class:flag-wrong={gameFinished && !isMined && isFlagged}
+    class:did-explode={didExplode}
+    class:is-open={isOpen}
+    class:is-flagged={isFlagged}
+    class:is-mined={isMined && !isFlagged}
+    class:is-flagged-wrong={gameFinished && !isMined && isFlagged}
     on:mousedown={onMouseDown}
 >
     {#if isFlagged}
         <Flag />
-    {:else if isMined && gameFinished || exploded}
+    {:else if isMined && gameFinished || didExplode}
         <Mine />
     {:else if isOpen && count}
         {count}

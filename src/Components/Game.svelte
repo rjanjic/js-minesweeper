@@ -23,32 +23,26 @@
         y: Math.floor(i / cols),
     });
 
-    const getCell = (x, y) => map[getCellIndex(x, y)];
-
     const getCellByIndex = index => map[index];
 
-    const setCell = (x = 0, y = 0, data = {}) => {
-        const i = getCellIndex(x, y);
-        map[i] = Object.assign(map[i], data);
-    };
+    const setCellByIndex = (index, data = {}) => map[index] = Object.assign(map[index], data);
 
-    const getInitialMap = (x, y) => [...Array(x * y)].map(_ => ({
-         isMined: false,
-         isFlagged: false,
-         isOpen: false,
-         exploded: false,
-         count: 0,
-     }));
+    const getInitialMap = (x, y) => [...Array(x * y)].map(() => ({
+        isMined: false,
+        isFlagged: false,
+        isOpen: false,
+        didExplode: false,
+        count: 0,
+    }));
 
-    const handleMouseDown = i => event => {
+    const handleMouseDown = index => event => {
         event.preventDefault();
         const shouldFlag = event.which === 3 || event.button === 2;
-        const { x, y } = getIndexCords(i);
         if (shouldFlag) {
-            flagField(x, y);
+            flagCell(index);
             return;
         }
-        openField(x, y);
+        openCell(index);
     };
 
     const generateFieldMap = (cols, rows, mines) => {
@@ -59,11 +53,10 @@
         }
 
         for (let i = 0; i < rows * cols; i++) {
-            const { x, y } = getIndexCords(i);
-            const { isMined } = getCell(x, y);
+            const { isMined } = getCellByIndex(i);
             if (!isMined) {
-                setCell(x, y, {
-                    count: getSurroundingCount(x, y),
+                setCellByIndex(i, {
+                    count: getSurroundingCount(i),
                 });
             }
         }
@@ -72,11 +65,10 @@
     };
 
     const setRandomMine = () => {
-        const i = Math.floor(Math.random() * rows * cols);
-        const { x, y } = getIndexCords(i);
-        const { isMined } = getCell(x, y);
+        const index = Math.floor(Math.random() * rows * cols);
+        const { isMined } = getCellByIndex(index);
         if (!isMined) {
-            setCell(x, y, {
+            setCellByIndex(index, {
                 isMined: true,
             });
             return;
@@ -84,7 +76,9 @@
         setRandomMine();
     };
 
-    const getSurroundingFields = (x, y) => [
+    const getSurroundingFields = index => {
+        const { x, y } = getIndexCords(index);
+        return [
             { x: x - 1, y: y - 1 },
             { x: x - 1, y: y },
             { x: x - 1, y: y + 1 },
@@ -94,31 +88,46 @@
             { x: x + 1, y: y },
             { x: x + 1, y: y + 1 },
         ]
-        .filter(({ x, y }) => x >= 0 && y >= 0 && x < cols && y < rows)
-        // .map(getCellIndex);
+            .filter(({ x, y }) => x >= 0 && y >= 0 && x < cols && y < rows)
+            .map(({ x, y }) => getCellIndex(x, y));
+    };
 
-   const getSurroundingCount = (x, y) => getSurroundingFields(x, y)
-          .map(({ x, y }) => getCell(x, y).isMined ? 1 : 0)
-          .reduce((sum, value) => sum + value, 0);
 
-    const openField = (x, y) => {
-        const { isOpen, isFlagged, isMined, count } = getCell(x, y);
+    const getSurroundingCount = index =>
+        getSurroundingFields(index)
+            .map(index => getCellByIndex(index).isMined ? 1 : 0)
+            .reduce((sum, value) => sum + value, 0);
+
+    const openCell = index => {
+        const { isOpen, isFlagged, isMined, count } = getCellByIndex(index);
 
         if (!isOpen) {
             if (!gameStarted) {
+                if (isMined) {
+                    startGame();
+                    openCell(index);
+                    return;
+                }
+
                 gameStarted = true;
-                interval = setInterval(handleInterval, 1000);
+                interval = setInterval(() => {
+                    time++;
+                }, 1000);
             }
 
             if (isFlagged) return;
 
             if (isMined) {
-                setCell(x, y, { exploded: true });
+                setCellByIndex(index, {
+                    didExplode: true,
+                });
                 finishGame();
                 return;
             }
 
-            setCell(x, y, { isOpen: true });
+            setCellByIndex(index, {
+                isOpen: true,
+            });
 
             if (--fieldsLeft === 0) {
                 finishGame();
@@ -126,24 +135,19 @@
             }
 
             if (count === 0) {
-                const surrounding = getSurroundingFields(x, y);
-                for (const { x, y } of surrounding) {
-                    openField(x, y);
+                for (const cell of getSurroundingFields(index)) {
+                    openCell(cell);
                 }
             }
         }
     };
 
-    const handleInterval = () => {
-        ++time;
-    };
-
-    const flagField = (x, y) => {
-        const { isOpen, isFlagged } = getCell(x, y);
+    const flagCell = index => {
+        const { isOpen, isFlagged } = getCellByIndex(index);
         const shouldFlag = !isFlagged && minesLeft > 0;
         if (isOpen) return;
 
-        setCell(x, y, {
+        setCellByIndex(index, {
             isFlagged: shouldFlag,
         });
 
@@ -232,9 +236,9 @@
         />
     </div>
     <div class="field-table" class:finished={gameFinished}>
-        {#each map as { exploded, isOpen, isMined, isFlagged, count }, i}
+        {#each map as { didExplode, isOpen, isMined, isFlagged, count }, i}
             <Field
-                {exploded}
+                {didExplode}
                 {isOpen}
                 {isMined}
                 {isFlagged}
