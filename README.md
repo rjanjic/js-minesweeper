@@ -1,6 +1,6 @@
-# JavaScript Minesweeper
+# JavaScript Minesweeper - Svelte JS
 
-DEV env: `yarn && yarn start`
+DEV env: `yarn && yarn dev`
 
 Production build: `yarn build`
 
